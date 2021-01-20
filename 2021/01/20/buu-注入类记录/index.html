@@ -538,7 +538,7 @@
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;;</span><br><span class="line"><span class="keyword">Set</span> @a = <span class="keyword">CONCAT</span>(<span class="string">&#x27;se&#x27;</span>,<span class="string">&#x27;lect * from `1919810931114514`;&#x27;</span>);</span><br><span class="line"><span class="keyword">prepare</span> m <span class="keyword">from</span> @a;//定义预处理语句</span><br><span class="line"><span class="keyword">Execute</span> m;<span class="comment">#</span></span><br></pre></td></tr></table></figure>
 
 <p>2.handler</p>
-<p>handler是一种mysq自带的，非标准的sql语法。性能高但是少见</p>
+<p>handler是一种mysql自带的，非标准的sql语法。性能高但是少见</p>
 <p>基本语法：</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">handler</span> table_name <span class="keyword">open</span>//打开一张表</span><br><span class="line"><span class="keyword">handler</span> table_name <span class="keyword">read</span> <span class="keyword">first</span>(<span class="keyword">next</span>)//阅读指定的行</span><br><span class="line"><span class="keyword">handler</span> <span class="keyword">close</span>//关闭</span><br></pre></td></tr></table></figure>
 
