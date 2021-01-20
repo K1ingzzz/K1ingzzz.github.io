@@ -470,14 +470,14 @@
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    929
+                    1k
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    3 分
+                    4 分
                 </div>
                 
 
@@ -497,7 +497,8 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="堆叠注入"><a href="#堆叠注入" class="headerlink" title="堆叠注入"></a>堆叠注入</h2><p>堆叠注入的基本原理是在sql中， <strong>；</strong>一直被用来代表sql语句执行的结束，而如果后端代码允许在；后插入新的多条sql语句，使这些sql一起执行，就构成了堆叠注入。</p>
+                <h2 id="堆叠注入"><a href="#堆叠注入" class="headerlink" title="堆叠注入"></a>堆叠注入</h2><p>做buu之前对于堆叠的了解并不多，可以说几乎没有，做了几道题目之后才慢慢开始了解到了堆叠注入的基本原理和解题思路，并且堆叠在强网杯考了一道题，可以说这个类型的漏洞足够经典，于是大致上总结了一下。</p>
+<h3 id="堆叠注入原理"><a href="#堆叠注入原理" class="headerlink" title="堆叠注入原理"></a>堆叠注入原理</h3><p>堆叠注入的基本原理是在sql中， <strong>；</strong>一直被用来代表sql语句执行的结束，而如果后端代码允许在；后插入新的多条sql语句，使这些sql一起执行，就构成了堆叠注入。</p>
 <p>需要注意的是，堆叠注入与union联合查询并不相同，union后面接的只能是select语句，即只能进行查询功能，而堆叠则可以执行任意sql语句。</p>
 <h3 id="buu-web-2-随便注-强网杯2019"><a href="#buu-web-2-随便注-强网杯2019" class="headerlink" title="buu web 2 随便注 [强网杯2019]"></a>buu web 2 随便注 [强网杯2019]</h3><p>flag{72889698-fd20-41d7-a081-e7321af36e19}</p>
 <p>核心源码</p>
